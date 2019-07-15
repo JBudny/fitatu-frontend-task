@@ -1,16 +1,28 @@
 <template>
     <div class="editButton">
-        <button v-if="!edit" v-on:click="editEmployee">Edit</button>
+        <button
+            v-if="!edit"
+            v-on:click="editEmployee">
+            Edit
+        </button>
         <template v-else>
-            <button v-on:click="saveChanges">Save</button>
-            <button v-on:click="cancelChanges">Cancel</button>
+            <button
+                v-bind:class="{ disabled: !validated }"
+                v-on:click="saveChanges"
+                :disabled="validated == false">
+                Save
+            </button>
+            <button
+                v-on:click="cancelChanges">
+                Cancel
+            </button>
         </template>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['edit'],
+    props: ['edit', 'validated'],
     methods: {
         editEmployee () {
             this.$emit('editEmployee');
@@ -47,5 +59,15 @@ export default {
         &:hover{
         background: #88C1F7;
         }
+    }
+
+    .disabled {
+        background: #a3a3a3;
+        cursor: context-menu;
+
+        &:hover{
+            background: #a3a3a3;
+        }
+        &:focus { outline: none }
     }
 </style>
