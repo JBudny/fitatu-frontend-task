@@ -9,6 +9,7 @@
                 <th>Address</th>
                 <th>Phone</th>
                 <th>Email</th>
+                <th>Options</th>
             </tr>
             <tr v-for="employee in employees" class="employees-list__list-row">
                 <td>{{employee.id}}</td>
@@ -16,14 +17,26 @@
                 <td>{{employee.address.street}} {{employee.address.suite}} {{employee.address.city}}</td>
                 <td>{{employee.phone}}</td>
                 <td><a :href="`mailto:${ employee.email }`">{{employee.email}}</a></td>
+                <td style="vertical-align: inherit;">
+                    <EditButton 
+                    :edit="employee.edit" 
+                    @editEmployee="editEmployee(employee)"
+                    @saveChanges="saveChanges(employee)"
+                    @cancelChanges="cancelChanges(employee)"
+                    />
+                </td>
             </tr>
         </table>
     </div>
 </template>
 <script>
     import axios from 'axios';
+    import EditButton from '@components/EditButton'
 
     export default {
+        components: {
+            EditButton
+        },
         data() {
             return {
                 loading: false,
@@ -42,12 +55,22 @@
 
                 axios.get('https://jsonplaceholder.typicode.com/users')
                     .then(({data}) => {
+                        data.forEach((employee)=>employee.edit=false);
                         this.employees = data;
                     })
                     .finally(() => {
                         this.loading = false;
                     })
-            }
+            },
+            editEmployee (employee) {
+                employee.edit=true;
+            },
+            cancelChanges (employee) {
+                employee.edit = false;
+            },
+            saveChanges (employee) {
+                employee.edit = false;
+          }
         }
     };
 
