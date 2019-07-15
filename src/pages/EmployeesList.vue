@@ -13,14 +13,14 @@
             </tr>
             <tr v-for="employee in employees" class="employees-list__list-row">
                 <template v-if="!employee.edit" >
-                    <td>{{employee.id}}</td>
-                    <td>{{employee.name}}</td>
-                    <td>{{employee.address.street}} {{employee.address.suite}} {{employee.address.city}}</td>
-                    <td>{{employee.phone}}</td>
-                    <td><a :href="`mailto:${ employee.email }`">{{employee.email}}</a></td>
+                    <td data-label="id:">{{employee.id}}</td>
+                    <td data-label="Name:">{{employee.name}}</td>
+                    <td data-label="Address:">{{employee.address.street}} {{employee.address.suite}} {{employee.address.city}}</td>
+                    <td data-label="Phone:">{{employee.phone}}</td>
+                    <td data-label="Email:"><a :href="`mailto:${ employee.email }`">{{employee.email}}</a></td>
                 </template>
                 <template v-else>
-                        <td>
+                        <td data-label="id:">
                             <input
                                 v-bind:class="{ isError: employee.idError }"
                                 type="text"
@@ -28,7 +28,7 @@
                                 placeholder="Id"
                                 v-on:input="validateId(employee)">
                         </td>
-                        <td>
+                        <td data-label="Name:">
                             <input
                                 v-bind:class="{ isError: employee.nameError }"
                                 type="text"
@@ -36,27 +36,30 @@
                                 placeholder="Name"
                                 v-on:input="validateName(employee)">
                         </td>
-                        <td>
+                        <td data-label="Address (street, suite, city):">
                             <input
+                                name="street"
                                 v-bind:class="{ isError: employee.addressError }"
                                 type="text"
                                 v-model="employee.address.street"
                                 placeholder="Street"
                                 v-on:input="validateAddress(employee)">
                             <input
+                                name="Suite"
                                 v-bind:class="{ isError: employee.addressError }"
                                 type="text"
                                 v-model="employee.address.suite"
                                 placeholder="Suite"
                                 v-on:input="validateAddress(employee)">
                             <input
+                                name="City"
                                 v-bind:class="{ isError: employee.addressError }"
                                 type="text"
                                 v-model="employee.address.city"
                                 placeholder="City"
                                 v-on:input="validateAddress(employee)">
                         </td>
-                        <td>
+                        <td data-label="Phone:">
                             <input
                                 v-bind:class="{ isError: employee.phoneError }"
                                 type="text"
@@ -64,7 +67,7 @@
                                 placeholder="Phone number"
                                 v-on:input="validatePhone(employee)">
                         </td>
-                        <td>
+                        <td data-label="Options:">
                             <input
                                 v-bind:class="{ isError: employee.emailError }"
                                 type="text"
@@ -260,10 +263,69 @@
             td {
                 padding: 8px;
                 input {
+                    min-width: 10px;
+                    max-width: 100%;
+                    width: 100%;
+                    border-width: 1px !important;
                     margin: 0.125rem;
                 }
                 .isError {
                     background: #ffd6d6;
+                }
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .employees-list {
+                &__header {
+                    text-align: center;
+                    font-size: 1.5rem;
+                    padding: 0;
+                }
+
+                &__list {
+                    border: 0;
+                }
+
+                &__list-header {
+                    border: none;
+                    clip: rect(0 0 0 0);
+                    height: 1px;
+                    margin: -1px;
+                    overflow: hidden;
+                    padding: 0;
+                    position: absolute;
+                    width: 1px;
+                }
+
+                &__list-row {
+                    border-bottom: 3px solid #ddd;
+                    display: block;
+                    margin-bottom: .625em;
+                    box-shadow: 0.125rem 0.125rem 0.625rem #aaaaaa;
+
+                    td {
+                        border-bottom: 1px solid #ddd;
+                        display: block;
+                        font-size: .81rem;
+                        text-align: right;
+
+                        input {
+                            font-size: 1.2rem;
+                            margin-top:0.250rem;
+                        }
+
+                        &:before {
+                            content: attr(data-label);
+                            float: left;
+                            text-transform: uppercase;
+                            margin-left: 2px;
+                        }
+
+                        &:last-child {
+                            border-bottom: 0;
+                        }
+                    }
                 }
             }
         }

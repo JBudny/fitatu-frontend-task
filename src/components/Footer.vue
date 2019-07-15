@@ -14,7 +14,6 @@
         padding: 15px 50px;
         background-color: #f7f8f9;
         z-index: 3;
-        position: absolute;
         bottom: 0;
 
         &__fitatu-info {
